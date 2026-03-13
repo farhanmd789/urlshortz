@@ -191,9 +191,51 @@
             text-decoration: underline;
         }
 
+        .info-grid {
+            margin-top: 1.2rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.65rem;
+        }
+
+        .info-card {
+            border: 1px solid var(--card-border);
+            background: rgba(2, 6, 23, 0.55);
+            border-radius: 0.75rem;
+            padding: 0.85rem;
+        }
+
+        .info-card h3 {
+            margin: 0 0 0.35rem;
+            font-size: 0.9rem;
+            font-weight: 650;
+            color: #cbd5e1;
+        }
+
+        .info-card p {
+            margin: 0;
+            font-size: 0.84rem;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+
+        .cta-tip {
+            margin-top: 0.95rem;
+            padding: 0.7rem 0.85rem;
+            border-radius: 0.65rem;
+            border: 1px dashed rgba(34, 197, 94, 0.45);
+            background: rgba(34, 197, 94, 0.1);
+            font-size: 0.86rem;
+            color: #d1fae5;
+        }
+
         @media (max-width: 600px) {
             .card {
                 padding: 1.5rem 1.25rem 1.75rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -223,6 +265,25 @@
                 <button type="submit">Shorten URL</button>
             </div>
         </form>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Quick and Simple</h3>
+                <p>Paste your long link, click shorten, and share a compact URL instantly.</p>
+            </div>
+            <div class="info-card">
+                <h3>Smart Reuse</h3>
+                <p>If you shorten the same destination again, the app returns the same short code.</p>
+            </div>
+            <div class="info-card">
+                <h3>Built-in Analytics</h3>
+                <p>Track total clicks and last visit times from the analytics dashboard.</p>
+            </div>
+        </div>
+
+        <div class="cta-tip">
+            Tip: Use the Analytics link to see your most visited short links and monitor engagement.
+        </div>
 
         <div class="result" th:if="${result != null}">
             <p class="result-title">Your short link is ready</p>
