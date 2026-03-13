@@ -111,7 +111,8 @@ src/
 
 The `ShortCodeGenerator` uses `SecureRandom` to pick 8 characters from a 62-character alphabet (`0-9`, `a-z`, `A-Z`), giving 62⁸ ≈ 218 trillion possible codes. Uniqueness is verified against the database before saving.
 ## pics 
-<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/aa12eab4-d4b1-412b-abba-5753b10ce42f" />
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/c2cb16b4-46a3-4625-a197-d120428b9eef" />
+
 <img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/62378b88-60ee-46d4-81a4-6b44a80b600f" />
 <img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/1954c3aa-a176-4fb7-8a09-efd33b260f57" />
 <img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/1645f55e-a32c-4df0-bdee-7802996bc440" />
