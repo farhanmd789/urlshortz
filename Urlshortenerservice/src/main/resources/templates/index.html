@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>URL Shortener</title>
+    <style>
+        :root {
+            /* brand colors */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #22c55e;
+
+            /* surfaces */
+            --bg: radial-gradient(circle at top left, #0f172a 0, #020617 45%, #020617 100%);
+            --card-bg: rgba(15, 23, 42, 0.96);
+            --card-border: rgba(148, 163, 184, 0.25);
+
+            /* text */
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+
+            /* misc */
+            --border: #1f2937;
+            --error: #f97373;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+        }
+
+        .wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 640px;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.85);
+            padding: 2rem 2.25rem 2.25rem;
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            margin-top: 0.3rem;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        form {
+            margin-top: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.7rem 0.8rem;
+            border-radius: 0.6rem;
+            border: 1px solid var(--card-border);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+        }
+
+        .error {
+            margin-top: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--error);
+        }
+
+        .actions {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        button[type="submit"] {
+            padding: 0.6rem 1.4rem;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 26px rgba(37, 99, 235, 0.4);
+            filter: brightness(1.03);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .result {
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        .result-actions {
+            margin-top: 0.9rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            padding: 0.5rem 1.1rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.12s ease, border-color 0.12s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(15, 23, 42, 1);
+            border-color: var(--card-border);
+        }
+
+        .result-title {
+            margin: 0 0 0.6rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .result-row {
+            margin-bottom: 0.4rem;
+            font-size: 0.92rem;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-right: 0.25rem;
+        }
+
+        .result a {
+            color: var(--primary);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 1.5rem 1.25rem 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="card">
+        <div class="card-header">
+            <div style="display:flex; align-items: baseline; justify-content: space-between; gap: 1rem;">
+                <div>
+                    <h1 class="title">URL Shortener</h1>
+                    <p class="subtitle">Paste a long link and get a clean, shareable short URL.</p>
+                </div>
+                <a href="/analytics" style="color: var(--text-muted); text-decoration:none; font-weight:600; font-size:0.95rem;">Analytics</a>
+            </div>
+        </div>
+
+        <form th:action="@{/shorten}" th:object="${shortenUrlRequest}" method="post">
+            <label for="url">Destination URL</label>
+            <input type="text"
+                   id="url"
+                   th:field="*{url}"
+                   placeholder="https://example.com/very/long/url" />
+            <div class="error" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">Invalid URL</div>
+
+            <div class="actions">
+                <button type="submit">Shorten URL</button>
+            </div>
+        </form>
+
+        <div class="result" th:if="${result != null}">
+            <p class="result-title">Your short link is ready</p>
+
+            <div class="result-row">
+                <span class="result-label">Short URL:</span>
+                <a id="shortUrlLink" th:href="${result.shortUrl}" th:text="${result.shortUrl}"></a>
+            </div>
+
+            <div class="result-row">
+                <span class="result-label">Short code:</span>
+                <span th:text="${result.shortCode}"></span>
+            </div>
+
+            <div class="result-row">
+                <span class="result-label">Original:</span>
+                <span th:text="${result.originalUrl}"></span>
+            </div>
+
+            <div class="result-row">
+                <span class="result-label">Created:</span>
+                <span th:text="${result.createdAt}"></span>
+            </div>
+
+            <div class="result-row">
+                <span class="result-label">Expires:</span>
+                <span th:text="${result.expiresAt != null ? result.expiresAt : 'Never'}"></span>
+            </div>
+
+            <div class="result-actions">
+                <button id="copyButton" type="button" class="btn-secondary" onclick="copyShortUrl()">Copy short URL</button>
+                <button type="button" class="btn-secondary" onclick="window.location.href='/'">Shorten another URL</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function copyShortUrl() {
+        const link = document.getElementById('shortUrlLink');
+        const button = document.getElementById('copyButton');
+        if (!link) return;
+        const url = link.getAttribute('href') || link.textContent;
+        if (navigator.clipboard && url) {
+            navigator.clipboard.writeText(url).then(() => {
+                if (button) {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 1500);
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>
